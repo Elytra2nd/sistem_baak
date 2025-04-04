@@ -9,22 +9,37 @@ use Illuminate\Support\Facades\Hash;
 
 class MahasiswaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('show-mahasiswa');
-        $mahasiswas = Mahasiswa::with('user')->latest()->get();
+
+        $search = $request->input('search');
+
+        $mahasiswas = Mahasiswa::with('user')
+            ->whereHas('user', function ($query) use ($search) {
+                if ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                }
+            })
+            ->orWhere('nim', 'like', "%{$search}%")
+            ->orWhere('jurusan', 'like', "%{$search}%")
+            ->latest()
+            ->paginate(5);
+
         return view('mahasiswa.index', compact('mahasiswas'));
     }
 
     public function create()
     {
         $this->authorize('create-mahasiswa');
-        return view('mahasiswa.create');
+        return view('mahasiswa.form'); // Gunakan `form.blade.php` untuk Create & Edit
     }
 
     public function store(Request $request)
     {
         $this->authorize('create-mahasiswa');
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -55,17 +70,16 @@ class MahasiswaController extends Controller
         return redirect()->route('mahasiswa.index')->with('success', 'Mahasiswa berhasil ditambahkan.');
     }
 
-    public function edit($id)
+    public function edit(Mahasiswa $mahasiswa) // Gunakan route model binding
     {
         $this->authorize('edit-mahasiswa');
-        $mahasiswa = Mahasiswa::with('user')->findOrFail($id);
-        return view('mahasiswa.edit', compact('mahasiswa'));
+        return view('mahasiswa.form', compact('mahasiswa')); // Gunakan `form.blade.php`
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Mahasiswa $mahasiswa)
     {
         $this->authorize('edit-mahasiswa');
-        $mahasiswa = Mahasiswa::findOrFail($id);
+
         $user = $mahasiswa->user;
 
         $request->validate([
@@ -87,10 +101,10 @@ class MahasiswaController extends Controller
         return redirect()->route('mahasiswa.index')->with('success', 'Data mahasiswa diperbarui.');
     }
 
-    public function destroy($id)
+    public function destroy(Mahasiswa $mahasiswa)
     {
         $this->authorize('delete-mahasiswa');
-        $mahasiswa = Mahasiswa::findOrFail($id);
+
         $mahasiswa->user->delete(); // Hapus juga user-nya
         $mahasiswa->delete();
 
