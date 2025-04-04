@@ -2,22 +2,51 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
+    public function run()
     {
-        // User::factory(10)->create();
+        // Membuat Permission
+        $permissions = [
+            'create-mahasiswa',
+            'edit-mahasiswa',
+            'delete-mahasiswa',
+            'show-mahasiswa'
+        ];
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission]);
+        }
+
+        // Membuat Role
+        $adminBaak = Role::firstOrCreate(['name' => 'admin baak']);
+        $adminKeuangan = Role::firstOrCreate(['name' => 'admin keuangan']);
+        $mahasiswa = Role::firstOrCreate(['name' => 'mahasiswa']);
+
+        // Assign Permission ke Role
+        $adminBaak->givePermissionTo(['create-mahasiswa', 'edit-mahasiswa', 'delete-mahasiswa', 'show-mahasiswa']);
+        $adminKeuangan->givePermissionTo(['show-mahasiswa']);
+        $mahasiswa->givePermissionTo(['edit-mahasiswa', 'show-mahasiswa']);
+
+        // Membuat User
+        $users = [
+            ['name' => 'Admin BAAK', 'email' => 'adminbaak@example.com', 'role' => 'admin baak'],
+            ['name' => 'Admin Keuangan', 'email' => 'adminkeuangan@example.com', 'role' => 'admin keuangan'],
+            ['name' => 'Mahasiswa', 'email' => 'mahasiswa@example.com', 'role' => 'mahasiswa'],
+        ];
+
+        foreach ($users as $userData) {
+            $user = User::firstOrCreate(
+                ['email' => $userData['email']],
+                ['name' => $userData['name'], 'password' => bcrypt('password')]
+            );
+
+            $user->assignRole($userData['role']);
+        }
     }
 }
