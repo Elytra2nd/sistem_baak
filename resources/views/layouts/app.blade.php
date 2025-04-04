@@ -6,71 +6,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Custom Admin Template CSS (optional) -->
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
-
-    <!-- Scripts -->
+    <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
     @livewireStyles
     @stack('styles')
 </head>
 
-<body class="bg-gray-100 font-sans antialiased">
+<body class="font-sans antialiased bg-gray-100">
+    <div class="min-h-screen">
+        @include('layouts.navigation') {{-- opsional, jika masih dipakai --}}
 
-    <x-banner />
-
-    <div class="min-h-screen flex flex-row">
-
-        <!-- Sidebar -->
-        <aside class="w-64 bg-white border-r shadow-md">
-            <div class="p-4 font-bold text-lg border-b">
-                {{ config('app.name', 'Laravel') }}
-            </div>
-            <nav class="mt-4 px-4">
-                <ul class="space-y-2">
-                    <li><a href="{{ route('dashboard') }}"
-                            class="block py-2 text-gray-700 hover:text-blue-600">Dashboard</a></li>
-                    <li><a href="{{ route('mahasiswa.index') }}"
-                            class="block py-2 text-gray-700 hover:text-blue-600">Mahasiswa</a></li>
-                    <!-- Tambahkan menu lain di sini -->
-                </ul>
-            </nav>
-        </aside>
-
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col">
-
-            <!-- Navbar -->
-            <header class="bg-white border-b shadow px-6 py-4 flex justify-between items-center">
-                <div>
-                    @if (isset($header))
-                        <h1 class="text-xl font-semibold">{{ $header }}</h1>
-                    @endif
-                </div>
-                <div>
-                    <!-- Misalnya user dropdown / logout -->
-                    @livewire('navigation-menu')
+        <!-- Page Heading -->
+        @hasSection('header')
+            <header class="bg-white shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    @yield('header')
                 </div>
             </header>
+        @endif
 
-            <!-- Page Content -->
-            <main class="p-6 bg-gray-100 flex-1">
-                {{ $slot }}
-            </main>
+        <!-- Flash Messages -->
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
+            @if(session('success'))
+                <div class="flash-message bg-green-100 text-green-700 p-3 rounded-md mb-4">
+                    {{ session('success') }}
+                </div>
+            @endif
 
+            @if(session('error'))
+                <div class="flash-message bg-red-100 text-red-700 p-3 rounded-md mb-4">
+                    {{ session('error') }}
+                </div>
+            @endif
         </div>
+
+        <!-- Page Content -->
+        <main class="py-6">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                @yield('content')
+            </div>
+        </main>
     </div>
 
     @stack('modals')
     @livewireScripts
     @stack('scripts')
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Flash message auto-hide
+            setTimeout(() => {
+                document.querySelectorAll(".flash-message").forEach(msg => msg.style.display = "none");
+            }, 5000);
+
+            // Konfirmasi penghapusan
+            document.querySelectorAll(".delete-btn").forEach(button => {
+                button.addEventListener("click", function (event) {
+                    if (!confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+                        event.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -21,3 +21,4 @@ Route::middleware([
 Route::middleware(['auth'])->group(function () {
     Route::resource('mahasiswa', MahasiswaController::class)->names('mahasiswa');
 });
+
