@@ -1,65 +1,62 @@
 @csrf
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div>
+<div class="grid grid-cols-6 gap-6">
+    <div class="col-span-6 sm:col-span-3">
         <label class="block text-sm font-medium text-gray-700">Nama</label>
-        <input type="text" name="name"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-indigo-200"
-            value="{{ old('name', $mahasiswa->user->name ?? '') }}" required>
+        <input type="text" name="name" value="{{ old('name', $mahasiswa->user->name ?? '') }}"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-cyan-600 focus:border-cyan-600 sm:text-sm">
     </div>
 
-    <div>
+    <div class="col-span-6 sm:col-span-3">
         <label class="block text-sm font-medium text-gray-700">Email</label>
-        <input type="email" name="email"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-indigo-200"
-            value="{{ old('email', $mahasiswa->user->email ?? '') }}" required>
+        <input type="email" name="email" value="{{ old('email', $mahasiswa->user->email ?? '') }}"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-cyan-600 focus:border-cyan-600 sm:text-sm">
     </div>
 
     @if (!isset($edit))
-        <div>
+        <div class="col-span-6 sm:col-span-3">
             <label class="block text-sm font-medium text-gray-700">Password</label>
             <input type="password" name="password"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-indigo-200" required>
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-cyan-600 focus:border-cyan-600 sm:text-sm">
         </div>
 
-        <div>
+        <div class="col-span-6 sm:col-span-3">
             <label class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
             <input type="password" name="password_confirmation"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-indigo-200" required>
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-cyan-600 focus:border-cyan-600 sm:text-sm">
         </div>
     @endif
 
-    <div>
+    <div class="col-span-6 sm:col-span-3">
         <label class="block text-sm font-medium text-gray-700">NIM</label>
-        <input type="text" name="nim"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-indigo-200"
-            value="{{ old('nim', $mahasiswa->nim ?? '') }}" required>
+        <input type="text" name="nim" value="{{ old('nim', $mahasiswa->nim ?? '') }}"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-cyan-600 focus:border-cyan-600 sm:text-sm">
     </div>
 
-    <div>
+    <div class="col-span-6 sm:col-span-3">
         <label class="block text-sm font-medium text-gray-700">Jurusan</label>
-        <input type="text" name="jurusan"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-indigo-200"
-            value="{{ old('jurusan', $mahasiswa->jurusan ?? '') }}" required>
+        <input type="text" name="jurusan" value="{{ old('jurusan', $mahasiswa->jurusan ?? '') }}"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-cyan-600 focus:border-cyan-600 sm:text-sm">
     </div>
 
-    <div>
+    <div class="col-span-6 sm:col-span-3">
         <label class="block text-sm font-medium text-gray-700">Angkatan</label>
-        <input type="text" name="angkatan"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-indigo-200"
-            value="{{ old('angkatan', $mahasiswa->angkatan ?? '') }}" required>
+        <input type="text" name="angkatan" value="{{ old('angkatan', $mahasiswa->angkatan ?? '') }}"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-cyan-600 focus:border-cyan-600 sm:text-sm">
     </div>
 
-    <div class="col-span-1 md:col-span-2">
+    <div class="col-span-6">
         <label class="block text-sm font-medium text-gray-700">Alamat</label>
-        <textarea name="alamat"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-indigo-200">{{ old('alamat', $mahasiswa->alamat ?? '') }}</textarea>
+        <textarea name="alamat" rows="3"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-cyan-600 focus:border-cyan-600 sm:text-sm">{{ old('alamat', $mahasiswa->alamat ?? '') }}</textarea>
     </div>
 </div>
 
-<div class="mt-6 flex justify-end space-x-3">
-    <a href="{{ route('mahasiswa.index') }}"
-        class="inline-flex items-center px-4 py-2 bg-gray-200 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-300">Kembali</a>
+<div class="flex justify-between items-center mt-6">
+    <a href="{{ route('mahasiswa.index') }}" class="text-sm text-cyan-600 hover:underline">← Kembali</a>
+
     <button type="submit"
-        class="inline-flex items-center px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-md hover:bg-green-600">Simpan</button>
+        class="inline-flex items-center px-4 py-2 bg-cyan-600 border border-transparent rounded-md font-semibold text-white hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 text-sm">
+        Simpan
+    </button>
 </div>
