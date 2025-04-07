@@ -33,7 +33,7 @@ class MahasiswaController extends Controller
     public function create()
     {
         $this->authorize('create-mahasiswa');
-        return view('mahasiswa.form'); // Gunakan `form.blade.php` untuk Create & Edit
+        return view('mahasiswa.create');
     }
 
     public function store(Request $request)
@@ -50,7 +50,6 @@ class MahasiswaController extends Controller
             'alamat' => 'nullable|string',
         ]);
 
-        // Buat User
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -73,7 +72,7 @@ class MahasiswaController extends Controller
     public function edit(Mahasiswa $mahasiswa) // Gunakan route model binding
     {
         $this->authorize('edit-mahasiswa');
-        return view('mahasiswa.form', compact('mahasiswa')); // Gunakan `form.blade.php`
+        return view('mahasiswa.edit', compact('mahasiswa'));
     }
 
     public function update(Request $request, Mahasiswa $mahasiswa)

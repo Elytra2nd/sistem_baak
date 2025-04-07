@@ -3,7 +3,7 @@
 @section('title', 'Tambah Mahasiswa')
 
 @section('content')
-    <div class="bg-white border border-4 rounded-lg shadow relative m-10">
+    <div class="bg-white border-4 rounded-lg shadow relative m-10">
 
         <div class="flex items-start justify-between p-5 border-b rounded-t">
             <h3 class="text-xl font-semibold">
@@ -25,10 +25,6 @@
                 @include('mahasiswa.form')
 
                 <div class="pt-6 border-t border-gray-200 flex justify-end">
-                    <button type="submit"
-                        class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                        Simpan
-                    </button>
                 </div>
             </form>
         </div>

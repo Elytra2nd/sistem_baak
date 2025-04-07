@@ -32,10 +32,6 @@
 
     {{-- Footer with Submit Button --}}
     <div class="p-6 border-t border-gray-200 rounded-b bg-gray-50">
-        <button form="form-mahasiswa" type="submit"
-            class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-            Simpan Perubahan
-        </button>
     </div>
 
 </div>
